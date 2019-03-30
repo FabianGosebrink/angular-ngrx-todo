@@ -1,0 +1,28 @@
+<p>
+  {{ todo | json }}
+</p>
+<ng-template #loading></ng-template>
+
+<table
+  class="table table-borderless"
+  *ngIf="(todo$ | async) as todo; else loading"
+>
+  <tbody>
+    <tr>
+      <th scope="row">Id</th>
+      <td>{{ todo.id }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Value</th>
+      <td>{{ todo.value }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Done</th>
+      <td>{{ todo.done }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Created</th>
+      <td>{{ todo.created }}</td>
+    </tr>
+  </tbody>
+</table>
