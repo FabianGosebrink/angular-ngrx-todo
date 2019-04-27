@@ -5,6 +5,7 @@ import {
   AddTodoAction,
   LoadAllTodosAction,
   SetAsDoneAction,
+  DeleteTodoAction
 } from '@app/todo/store/todo.actions';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -12,7 +13,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
-  styleUrls: ['./content.component.css'],
+  styleUrls: ['./content.component.css']
 })
 export class ContentComponent implements OnInit {
   items$: Observable<Todo[]>;
@@ -33,5 +34,9 @@ export class ContentComponent implements OnInit {
 
   markAsDone(item: Todo) {
     this.store.dispatch(new SetAsDoneAction(item));
+  }
+
+  deleteItem(item: Todo) {
+    this.store.dispatch(new DeleteTodoAction(item));
   }
 }

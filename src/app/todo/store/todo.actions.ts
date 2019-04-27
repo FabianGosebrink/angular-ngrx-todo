@@ -13,6 +13,9 @@ export enum ActionTypes {
 
   SetAsDone = '[Todo] SetAsDone',
   SetAsDoneFinished = '[Todo] SetAsDone Finished',
+
+  DeleteTodo = '[Todo] DeleteTodo',
+  DeleteTodoFinished = '[Todo] DeleteTodo Finished'
 }
 
 export class LoadAllTodosAction implements Action {
@@ -54,7 +57,19 @@ export class SetAsDoneFinishedAction implements Action {
   constructor(public payload: Todo) {}
 }
 
+export class DeleteTodoAction implements Action {
+  readonly type = ActionTypes.DeleteTodo;
+  constructor(public payload: Todo) {}
+}
+
+export class DeleteTodoFinishedAction implements Action {
+  readonly type = ActionTypes.DeleteTodoFinished;
+  constructor(public payload: Todo) {}
+}
+
 export type TodoActions =
+  | DeleteTodoAction
+  | DeleteTodoFinishedAction
   | AddTodoAction
   | SetAsDoneAction
   | AddTodoFinishedAction

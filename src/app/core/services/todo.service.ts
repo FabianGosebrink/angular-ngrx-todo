@@ -4,7 +4,7 @@ import { environment } from '@env/environment';
 import { Todo } from '../../models/todo';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class TodoService {
   private url = `${environment.backendUrl}${environment.api}todos`;
@@ -25,5 +25,9 @@ export class TodoService {
 
   updateItem(value: Todo) {
     return this.http.put<Todo>(`${this.url}/${value.id}`, value);
+  }
+
+  deleteItem(value: Todo) {
+    return this.http.delete(`${this.url}/${value.id}`);
   }
 }

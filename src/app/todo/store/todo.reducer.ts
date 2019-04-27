@@ -8,7 +8,7 @@ export interface ReducerTodoState {
 
 export const initialState: ReducerTodoState = {
   items: [],
-  selectedItem: null,
+  selectedItem: null
 };
 
 export function todoReducer(
@@ -19,21 +19,28 @@ export function todoReducer(
     case ActionTypes.AddTodoFinished: {
       return {
         ...state,
-        items: [...state.items, action.payload],
+        items: [...state.items, action.payload]
       };
     }
 
     case ActionTypes.LoadAllTodosFinished: {
       return {
         ...state,
-        items: [...action.payload],
+        items: [...action.payload]
       };
     }
 
     case ActionTypes.LoadSingleTodoFinished: {
       return {
         ...state,
-        selectedItem: action.payload,
+        selectedItem: action.payload
+      };
+    }
+
+    case ActionTypes.DeleteTodoFinished: {
+      return {
+        ...state,
+        items: [...state.items.filter(x => x !== action.payload)]
       };
     }
 
@@ -43,7 +50,7 @@ export function todoReducer(
       state.items[index] = action.payload;
 
       return {
-        ...state,
+        ...state
       };
     }
 

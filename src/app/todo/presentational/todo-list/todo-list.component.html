@@ -1,28 +1,36 @@
-<div class="card mb-2" *ngFor="let item of items">
-  <div class="card-body">
-    <h5 class="card-title">
-      <a [routerLink]="['/todo', item.id]">
-        {{ item.value }}
-      </a>
-    </h5>
-    <h6 class="card-subtitle mb-2 text-muted">
-      {{ item.created | date: 'hh.MM.yyyy HH:mm' }}
-    </h6>
-    <button (click)="moveToDone(item)">
-      Done
-    </button>
-  </div>
-</div>
-
-<div *ngIf="doneItems.length > 0">
-  Done items:
-
-  <div class="card mb-2 done" *ngFor="let item of doneItems">
-    <div class="card-body">
-      <h5 class="card-title">{{ item.value }}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">
-        {{ item.created | date: 'hh.MM.yyyy HH:mm' }}
-      </h6>
+<div class="row">
+  <div class="col-md-6">
+    <h1>Todos</h1>
+    <div class="todolist not-done">
+      <ul id="sortable" class="list-unstyled">
+        <li class="ui-state-default" *ngFor="let item of items">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" (change)="moveToDone(item)" /><a
+                [routerLink]="['/todo', item.id]"
+              >
+                {{ item.value }}
+              </a></label
+            >
+          </div>
+        </li>
+      </ul>
+      <div class="todo-footer">
+        <strong><span class="count-todos"></span></strong>
+        {{ items.length }} items
+      </div>
     </div>
+  </div>
+
+  <div class="col-md-6">
+    <h1>Already Done</h1>
+    <ul>
+      <li *ngFor="let item of doneItems">
+        {{ item.value }}
+        <button class="btn btn-default" (click)="deleteItem(item)">
+          <span class="fa fa-trash"></span>
+        </button>
+      </li>
+    </ul>
   </div>
 </div>

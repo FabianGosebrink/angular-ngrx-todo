@@ -1,13 +1,10 @@
-<div class="starter-template">
-  <h1>Todo</h1>
-  <p>
-    <app-todo-form (todoAdded)="addTodo($event)"></app-todo-form>
-  </p>
-  <p>
-    <app-todo-list
-      [items]="items$ | async"
-      [doneItems]="doneItems$ | async"
-      (markAsDone)="markAsDone($event)"
-    ></app-todo-list>
-  </p>
+<div>
+  <app-todo-form (todoAdded)="addTodo($event)"></app-todo-form>
+  <hr />
+  <app-todo-list
+    [items]="items$ | async"
+    [doneItems]="doneItems$ | async"
+    (markAsDone)="markAsDone($event)"
+    (delete)="deleteItem($event)"
+  ></app-todo-list>
 </div>
