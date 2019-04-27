@@ -19,6 +19,8 @@ export class TodoListComponent {
   }
 
   deleteItem(item: Todo) {
-    this.delete.emit(item);
+    if (confirm('Really delete')) {
+      this.delete.emit(item);
+    }
   }
 }
