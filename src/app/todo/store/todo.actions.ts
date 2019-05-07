@@ -76,5 +76,5 @@ export type TodoActions =
   | SetAsDoneFinishedAction
   | LoadAllTodosAction
   | LoadAllTodosFinishedAction
-  | LoadSingleTodoFinishedAction
+  | LoadSingleTodoAction
   | LoadSingleTodoFinishedAction;

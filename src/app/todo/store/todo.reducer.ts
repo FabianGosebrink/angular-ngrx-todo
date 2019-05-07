@@ -4,11 +4,13 @@ import { ActionTypes, TodoActions } from './todo.actions';
 export interface ReducerTodoState {
   items: Todo[];
   selectedItem: Todo;
+  loading: boolean;
 }
 
 export const initialState: ReducerTodoState = {
   items: [],
-  selectedItem: null
+  selectedItem: null,
+  loading: false
 };
 
 export function todoReducer(
@@ -16,9 +18,21 @@ export function todoReducer(
   action: TodoActions
 ): ReducerTodoState {
   switch (action.type) {
+    case ActionTypes.AddTodo:
+    case ActionTypes.DeleteTodo:
+    case ActionTypes.LoadAllTodos:
+    case ActionTypes.LoadSingleTodo:
+    case ActionTypes.SetAsDone: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+
     case ActionTypes.AddTodoFinished: {
       return {
         ...state,
+        loading: false,
         items: [...state.items, action.payload]
       };
     }
@@ -26,6 +40,7 @@ export function todoReducer(
     case ActionTypes.LoadAllTodosFinished: {
       return {
         ...state,
+        loading: false,
         items: [...action.payload]
       };
     }
@@ -33,6 +48,7 @@ export function todoReducer(
     case ActionTypes.LoadSingleTodoFinished: {
       return {
         ...state,
+        loading: false,
         selectedItem: action.payload
       };
     }
@@ -40,6 +56,7 @@ export function todoReducer(
     case ActionTypes.DeleteTodoFinished: {
       return {
         ...state,
+        loading: false,
         items: [...state.items.filter(x => x !== action.payload)]
       };
     }
