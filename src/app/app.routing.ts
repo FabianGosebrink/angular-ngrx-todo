@@ -2,9 +2,9 @@ import { Routes } from '@angular/router';
 
 export const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/start' },
-  { path: 'start', loadChildren: './start/start.module#StartModule' },
+  { path: 'start', loadChildren: () => import('./start/start.module').then(m => m.StartModule) },
   {
     path: 'todo',
-    loadChildren: './todo/todo.module#TodoModule',
+    loadChildren: () => import('./todo/todo.module').then(m => m.TodoModule),
   },
 ];
