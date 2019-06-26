@@ -1,80 +1,44 @@
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { Todo } from '../../models/todo';
 
-export enum ActionTypes {
-  LoadAllTodos = '[Todo] Load Todos',
-  LoadAllTodosFinished = '[Todo] Load Todos Finished',
+export const loadAllTodos = createAction('[Todo] Load Todos');
+export const loadAllTodosFinished = createAction(
+  '[Todo] Load Todos Finished',
+  props<{ payload: Todo[] }>()
+);
 
-  LoadSingleTodo = '[Todo] Load Single Todos',
-  LoadSingleTodoFinished = '[Todo] Load Single Todo Finished',
+export const loadSingleTodo = createAction(
+  '[Todo] Load Single Todo',
+  props<{ payload: string }>()
+);
+export const loadSingleTodoFinished = createAction(
+  '[Todo] Load Single Todo Finished',
+  props<{ payload: Todo }>()
+);
 
-  AddTodo = '[Todo] Add Todo',
-  AddTodoFinished = '[Todo] Add Todo Finished',
+export const addTodo = createAction(
+  '[Todo] Add Todo',
+  props<{ payload: string }>()
+);
+export const addTodoFinished = createAction(
+  '[Todo] Add Todo Finished',
+  props<{ payload: Todo }>()
+);
 
-  SetAsDone = '[Todo] SetAsDone',
-  SetAsDoneFinished = '[Todo] SetAsDone Finished',
+export const setAsDone = createAction(
+  '[Todo] SetAsDone',
+  props<{ payload: Todo }>()
+);
+export const setAsDoneFinished = createAction(
+  '[Todo] SetAsDone Finished',
+  props<{ payload: Todo }>()
+);
 
-  DeleteTodo = '[Todo] DeleteTodo',
-  DeleteTodoFinished = '[Todo] DeleteTodo Finished'
-}
-
-export class LoadAllTodosAction implements Action {
-  readonly type = ActionTypes.LoadAllTodos;
-}
-
-export class LoadAllTodosFinishedAction implements Action {
-  readonly type = ActionTypes.LoadAllTodosFinished;
-  constructor(public payload: Todo[]) {}
-}
-
-export class LoadSingleTodoAction implements Action {
-  readonly type = ActionTypes.LoadSingleTodo;
-  constructor(public payload: string) {}
-}
-
-export class LoadSingleTodoFinishedAction implements Action {
-  readonly type = ActionTypes.LoadSingleTodoFinished;
-  constructor(public payload: Todo) {}
-}
-
-export class AddTodoAction implements Action {
-  readonly type = ActionTypes.AddTodo;
-  constructor(public payload: string) {}
-}
-
-export class AddTodoFinishedAction implements Action {
-  readonly type = ActionTypes.AddTodoFinished;
-  constructor(public payload: Todo) {}
-}
-
-export class SetAsDoneAction implements Action {
-  readonly type = ActionTypes.SetAsDone;
-  constructor(public payload: Todo) {}
-}
-
-export class SetAsDoneFinishedAction implements Action {
-  readonly type = ActionTypes.SetAsDoneFinished;
-  constructor(public payload: Todo) {}
-}
-
-export class DeleteTodoAction implements Action {
-  readonly type = ActionTypes.DeleteTodo;
-  constructor(public payload: Todo) {}
-}
-
-export class DeleteTodoFinishedAction implements Action {
-  readonly type = ActionTypes.DeleteTodoFinished;
-  constructor(public payload: Todo) {}
-}
-
-export type TodoActions =
-  | DeleteTodoAction
-  | DeleteTodoFinishedAction
-  | AddTodoAction
-  | SetAsDoneAction
-  | AddTodoFinishedAction
-  | SetAsDoneFinishedAction
-  | LoadAllTodosAction
-  | LoadAllTodosFinishedAction
-  | LoadSingleTodoAction
-  | LoadSingleTodoFinishedAction;
+export const deleteTodo = createAction(
+  '[Todo] DeleteTodo',
+  props<{ payload: Todo }>()
+);
+export const deleteTodoFinished = createAction(
+  '[Todo] DeleteTodo Finished',
+  props<{ payload: Todo }>()
+);

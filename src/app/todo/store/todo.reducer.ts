@@ -1,5 +1,6 @@
 import { Todo } from '../../models/todo';
-import { ActionTypes, TodoActions } from './todo.actions';
+import * as todoActions from './todo.actions';
+import { createReducer, on, Action } from '@ngrx/store';
 
 export interface ReducerTodoState {
   items: Todo[];
@@ -13,65 +14,53 @@ export const initialState: ReducerTodoState = {
   loading: false
 };
 
+const todoReducerInternal = createReducer(
+  initialState,
+  on(
+    todoActions.addTodo,
+    todoActions.deleteTodo,
+    todoActions.loadAllTodos,
+    todoActions.loadSingleTodo,
+    todoActions.setAsDone,
+    state => ({
+      ...state,
+      loading: true
+    })
+  ),
+  on(todoActions.addTodoFinished, (state, { payload }) => ({
+    ...state,
+    loading: false,
+    items: [...state.items, payload]
+  })),
+  on(todoActions.loadAllTodosFinished, (state, { payload }) => ({
+    ...state,
+    loading: false,
+    items: [...payload]
+  })),
+  on(todoActions.loadSingleTodoFinished, (state, { payload }) => ({
+    ...state,
+    loading: false,
+    selectedItem: payload
+  })),
+  on(todoActions.deleteTodoFinished, (state, { payload }) => ({
+    ...state,
+    loading: false,
+    items: [...state.items.filter(x => x !== payload)]
+  })),
+  on(todoActions.setAsDoneFinished, (state, { payload }) => {
+    const index = state.items.findIndex(x => x.id === payload.id);
+
+    state.items[index] = payload;
+
+    return {
+      ...state
+    };
+  })
+);
+
 export function todoReducer(
-  state = initialState,
-  action: TodoActions
-): ReducerTodoState {
-  switch (action.type) {
-    case ActionTypes.AddTodo:
-    case ActionTypes.DeleteTodo:
-    case ActionTypes.LoadAllTodos:
-    case ActionTypes.LoadSingleTodo:
-    case ActionTypes.SetAsDone: {
-      return {
-        ...state,
-        loading: true
-      };
-    }
-
-    case ActionTypes.AddTodoFinished: {
-      return {
-        ...state,
-        loading: false,
-        items: [...state.items, action.payload]
-      };
-    }
-
-    case ActionTypes.LoadAllTodosFinished: {
-      return {
-        ...state,
-        loading: false,
-        items: [...action.payload]
-      };
-    }
-
-    case ActionTypes.LoadSingleTodoFinished: {
-      return {
-        ...state,
-        loading: false,
-        selectedItem: action.payload
-      };
-    }
-
-    case ActionTypes.DeleteTodoFinished: {
-      return {
-        ...state,
-        loading: false,
-        items: [...state.items.filter(x => x !== action.payload)]
-      };
-    }
-
-    case ActionTypes.SetAsDoneFinished: {
-      const index = state.items.findIndex(x => x.id === action.payload.id);
-
-      state.items[index] = action.payload;
-
-      return {
-        ...state
-      };
-    }
-
-    default:
-      return state;
-  }
+  state: ReducerTodoState | undefined,
+  action: Action
+) {
+  return todoReducerInternal(state, action);
 }

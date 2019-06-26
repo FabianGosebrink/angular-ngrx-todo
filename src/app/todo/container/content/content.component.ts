@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '@app/models/todo';
 import { getAllDoneItems, getAllUndoneItems, TodoState } from '@app/todo/store';
-import {
-  AddTodoAction,
-  LoadAllTodosAction,
-  SetAsDoneAction,
-  DeleteTodoAction
-} from '@app/todo/store/todo.actions';
+import * as fromTodoStore from '@app/todo/store';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -25,18 +20,18 @@ export class ContentComponent implements OnInit {
     this.items$ = this.store.pipe(select(getAllUndoneItems));
     this.doneItems$ = this.store.pipe(select(getAllDoneItems));
 
-    this.store.dispatch(new LoadAllTodosAction());
+    this.store.dispatch(fromTodoStore.loadAllTodos());
   }
 
   addTodo(item: string) {
-    this.store.dispatch(new AddTodoAction(item));
+    this.store.dispatch(fromTodoStore.addTodo({ payload: item }));
   }
 
   markAsDone(item: Todo) {
-    this.store.dispatch(new SetAsDoneAction(item));
+    this.store.dispatch(fromTodoStore.setAsDone({ payload: item }));
   }
 
   deleteItem(item: Todo) {
-    this.store.dispatch(new DeleteTodoAction(item));
+    this.store.dispatch(fromTodoStore.deleteTodo({ payload: item }));
   }
 }
