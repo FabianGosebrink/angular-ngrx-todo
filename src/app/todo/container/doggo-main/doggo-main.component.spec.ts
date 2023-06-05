@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { HttpClientModule } from '@angular/common/http';
 import { DoggoMainComponent } from './doggo-main.component';
 
 describe('DoggoMainComponent', () => {
@@ -8,7 +9,7 @@ describe('DoggoMainComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DoggoMainComponent]
+      imports: [DoggoMainComponent, HttpClientModule],
     });
     fixture = TestBed.createComponent(DoggoMainComponent);
     component = fixture.componentInstance;

@@ -8,7 +8,7 @@ describe('DoggoFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DoggoFormComponent]
+      imports: [DoggoFormComponent],
     });
     fixture = TestBed.createComponent(DoggoFormComponent);
     component = fixture.componentInstance;
