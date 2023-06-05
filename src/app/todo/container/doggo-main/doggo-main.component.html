@@ -8,7 +8,7 @@
 
             <app-doggo-form (todoAdded)="addTodo($event)"></app-doggo-form>
             <app-doggo-list
-              [items]="items"
+              [items]="items$ | async"
               (delete)="deleteTodo($event)"
               (markAsDone)="markAsDone($event)"
             ></app-doggo-list>

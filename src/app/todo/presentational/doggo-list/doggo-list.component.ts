@@ -17,7 +17,6 @@ export class DoggoListComponent {
   @Output() delete = new EventEmitter();
 
   moveToDone(item: Todo) {
-    item.done = true;
     this.markAsDone.emit(item);
   }
 
