@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Todo } from '../../models/todo';
@@ -28,7 +23,6 @@ import { getAllItems } from '../../store/todo.selectors';
 })
 export class DoggoMainComponent {
   items$: Observable<Todo[]>;
-  form: FormGroup;
 
   constructor(private readonly store: Store) {}
 
@@ -36,16 +30,10 @@ export class DoggoMainComponent {
     this.items$ = this.store.pipe(select(getAllItems));
 
     this.store.dispatch(TodoActions.loadAllTodos());
-
-    this.form = new FormGroup({
-      todoValue: new FormControl('', Validators.required),
-    });
   }
 
   addTodo(value: string): void {
     this.store.dispatch(TodoActions.addTodo({ value }));
-
-    this.form.reset();
   }
 
   deleteTodo(todo: Todo): void {

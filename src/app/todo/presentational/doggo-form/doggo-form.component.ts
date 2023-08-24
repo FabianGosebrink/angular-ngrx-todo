@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-doggo-form',
@@ -17,14 +12,12 @@ import {
 export class DoggoFormComponent {
   @Output() todoAdded = new EventEmitter();
 
-  form: FormGroup;
+  form = this.formbuilder.group({
+    todoValue: ['', Validators.required],
+    done: [false],
+  });
 
-  constructor(formbuilder: FormBuilder) {
-    this.form = formbuilder.group({
-      todoValue: ['', Validators.required],
-      done: [false],
-    });
-  }
+  constructor(private formbuilder: FormBuilder) {}
 
   addTodo() {
     this.todoAdded.emit(this.form.value.todoValue);
