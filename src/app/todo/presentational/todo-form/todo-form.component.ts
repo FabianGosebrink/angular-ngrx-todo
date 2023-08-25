@@ -3,13 +3,13 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-doggo-form',
+  selector: 'app-todo-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './doggo-form.component.html',
-  styleUrls: ['./doggo-form.component.css'],
+  templateUrl: './todo-form.component.html',
+  styleUrls: ['./todo-form.component.css'],
 })
-export class DoggoFormComponent {
+export class TodoFormComponent {
   @Output() todoAdded = new EventEmitter();
 
   form = this.formbuilder.group({

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientModule } from '@angular/common/http';
-import { DoggoMainComponent } from './doggo-main.component';
+import { TodoMainComponent } from './todo-main.component';
 
-describe('DoggoMainComponent', () => {
-  let component: DoggoMainComponent;
-  let fixture: ComponentFixture<DoggoMainComponent>;
+describe('TodoMainComponent', () => {
+  let component: TodoMainComponent;
+  let fixture: ComponentFixture<TodoMainComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DoggoMainComponent, HttpClientModule],
+      imports: [TodoMainComponent, HttpClientModule],
     });
-    fixture = TestBed.createComponent(DoggoMainComponent);
+    fixture = TestBed.createComponent(TodoMainComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

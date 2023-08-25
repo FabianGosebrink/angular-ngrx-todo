@@ -3,13 +3,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Todo } from '../../models/todo';
 
 @Component({
-  selector: 'app-doggo-list',
+  selector: 'app-todo-list',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './doggo-list.component.html',
-  styleUrls: ['./doggo-list.component.css'],
+  templateUrl: './todo-list.component.html',
+  styleUrls: ['./todo-list.component.css'],
 })
-export class DoggoListComponent {
+export class TodoListComponent {
   @Input() items: Todo[] = [];
   @Input() doneItems: Todo[] = [];
 

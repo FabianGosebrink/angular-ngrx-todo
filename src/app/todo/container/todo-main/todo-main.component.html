@@ -6,12 +6,12 @@
           <div class="card-body p-5">
             <h6 class="mb-3">Awesome Todo List</h6>
 
-            <app-doggo-form (todoAdded)="addTodo($event)"></app-doggo-form>
-            <app-doggo-list
+            <app-todo-form (todoAdded)="addTodo($event)"></app-todo-form>
+            <app-todo-list
               [items]="items$ | async"
               (delete)="deleteTodo($event)"
               (markAsDone)="markAsDone($event)"
-            ></app-doggo-list>
+            ></app-todo-list>
           </div>
         </div>
       </div>

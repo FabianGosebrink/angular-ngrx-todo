@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DoggoListComponent } from './doggo-list.component';
+import { TodoListComponent } from './todo-list.component';
 
-describe('DoggoListComponent', () => {
-  let component: DoggoListComponent;
-  let fixture: ComponentFixture<DoggoListComponent>;
+describe('TodoListComponent', () => {
+  let component: TodoListComponent;
+  let fixture: ComponentFixture<TodoListComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DoggoListComponent]
+      imports: [TodoListComponent]
     });
-    fixture = TestBed.createComponent(DoggoListComponent);
+    fixture = TestBed.createComponent(TodoListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
