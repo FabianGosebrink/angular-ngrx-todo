@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -22,9 +22,9 @@ import { getAllItems } from '../../store/todo.selectors';
   styleUrls: ['./todo-main.component.css'],
 })
 export class TodoMainComponent {
-  items$: Observable<Todo[]>;
+  private readonly store = inject(Store);
 
-  constructor(private readonly store: Store) {}
+  items$: Observable<Todo[]>;
 
   ngOnInit(): void {
     this.items$ = this.store.pipe(select(getAllItems));

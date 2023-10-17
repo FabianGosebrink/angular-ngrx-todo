@@ -1,22 +1,60 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HttpClientModule } from '@angular/common/http';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { Todo } from '../../models/todo';
+import { TodoState } from '../../store/todo.reducer';
+import { featureName } from '../../store/todo.selectors';
+import { initialState } from './../../store/todo.reducer';
 import { TodoMainComponent } from './todo-main.component';
 
 describe('TodoMainComponent', () => {
   let component: TodoMainComponent;
   let fixture: ComponentFixture<TodoMainComponent>;
+  let store: MockStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [TodoMainComponent, HttpClientModule],
+      imports: [TodoMainComponent],
+      providers: [
+        provideMockStore({
+          initialState: { [featureName]: { ...initialState } },
+        }),
+      ],
     });
+
     fixture = TestBed.createComponent(TodoMainComponent);
     component = fixture.componentInstance;
+    store = TestBed.inject(MockStore);
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have three items when three items are in store', waitForAsync(() => {
+    const expectedItems = [
+      { id: '1', value: 'test', done: false },
+      { id: '2', value: 'test', done: false },
+      { id: '3', value: 'test', done: false },
+    ] as Todo[];
+
+    store.setState({
+      [featureName]: {
+        items: expectedItems,
+      } as TodoState,
+    });
+
+    fixture.detectChanges();
+
+    const res = fixture.debugElement.queryAll(
+      (x) => x.nativeElement.tagName === 'LI'
+    );
+
+    expect(res.length).toEqual(3);
+
+    component.items$.subscribe((result) => {
+      expect(result).toEqual(expectedItems);
+    });
+  }));
 });
