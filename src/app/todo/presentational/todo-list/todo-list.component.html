@@ -1,36 +1,25 @@
-<div class="row">
-  <div class="col-md-6">
-    <h1>Todos</h1>
-    <div class="todolist not-done">
-      <ul id="sortable" class="list-unstyled">
-        <li class="ui-state-default" *ngFor="let item of items">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" (change)="moveToDone(item)" /><a
-                [routerLink]="['/todo', item.id]"
-              >
-                {{ item.value }}
-              </a></label
-            >
-          </div>
-        </li>
-      </ul>
-      <div class="todo-footer">
-        <strong><span class="count-todos"></span></strong>
-        {{ items.length }} items
-      </div>
+<ul class="list-group mb-0">
+  <li
+    *ngFor="let item of items"
+    class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2"
+  >
+    <div class="d-flex align-items-center">
+      <input
+        class="form-check-input me-2"
+        type="checkbox"
+        [checked]="item.done"
+        value=""
+        aria-label="..."
+        (click)="moveToDone(item)"
+      />
+      {{ item.value }}
     </div>
-  </div>
-
-  <div class="col-md-6">
-    <h1>Already Done</h1>
-    <ul class="list-unstyled">
-      <li *ngFor="let item of doneItems">
-        {{ item.value }}
-        <button class="btn btn-default" (click)="deleteItem(item)">
-          <span class="fa fa-trash"></span>
-        </button>
-      </li>
-    </ul>
-  </div>
-</div>
+    <button
+      type="button"
+      class="btn btn-danger btn-sm"
+      (click)="deleteItem(item)"
+    >
+      Delete
+    </button>
+  </li>
+</ul>

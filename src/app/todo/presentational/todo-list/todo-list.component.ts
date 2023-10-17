@@ -1,10 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Todo } from '@app/models/todo';
+import { Todo } from '../../models/todo';
 
 @Component({
   selector: 'app-todo-list',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.css']
+  styleUrls: ['./todo-list.component.css'],
 })
 export class TodoListComponent {
   @Input() items: Todo[] = [];
@@ -14,7 +17,6 @@ export class TodoListComponent {
   @Output() delete = new EventEmitter();
 
   moveToDone(item: Todo) {
-    item.done = true;
     this.markAsDone.emit(item);
   }
 

@@ -1,34 +1,23 @@
-import { Injectable } from '@angular/core';
-import { Actions, ofType, createEffect } from '@ngrx/effects';
+import { Injectable, inject } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import * as todoActions from './todo.actions';
-import { TodoService } from '@app/core/services/todo.service';
+import { catchError, concatMap, map } from 'rxjs/operators';
+import { TodoActions } from './todo.actions';
+import { TodoService } from './todo.service';
 
 @Injectable()
 export class TodoEffects {
-  constructor(private actions$: Actions, private todoService: TodoService) {}
+  private readonly actions$ = inject(Actions);
+
+  private readonly todoService = inject(TodoService);
 
   loadTodos$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(todoActions.loadAllTodos),
-      switchMap(action =>
+      ofType(TodoActions.loadAllTodos),
+      concatMap(() =>
         this.todoService.getItems().pipe(
-          map(todos => todoActions.loadAllTodosFinished({ payload: todos })),
-          catchError(error => of(error))
-        )
-      )
-    )
-  );
-
-  loadSingleTodos$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(todoActions.loadSingleTodo),
-      map(action => action.payload),
-      switchMap(payload =>
-        this.todoService.getItem(payload).pipe(
-          map(todo => todoActions.loadSingleTodoFinished({ payload: todo })),
-          catchError(error => of(error))
+          map((todos) => TodoActions.loadAllTodosFinished({ todos })),
+          catchError((error) => of(error))
         )
       )
     )
@@ -36,12 +25,11 @@ export class TodoEffects {
 
   addTodo$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(todoActions.addTodo),
-      map(action => action.payload),
-      switchMap(payload =>
-        this.todoService.addItem(payload).pipe(
-          map(todo => todoActions.addTodoFinished({ payload: todo })),
-          catchError(error => of(error))
+      ofType(TodoActions.addTodo),
+      concatMap(({ value }) =>
+        this.todoService.addItem(value).pipe(
+          map((todo) => TodoActions.addTodoFinished({ todo })),
+          catchError((error) => of(error))
         )
       )
     )
@@ -49,25 +37,24 @@ export class TodoEffects {
 
   markAsDone$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(todoActions.setAsDone),
-      map(action => action.payload),
-      switchMap(payload =>
-        this.todoService.updateItem(payload).pipe(
-          map(todo => todoActions.setAsDoneFinished({ payload: todo })),
-          catchError(error => of(error))
-        )
-      )
+      ofType(TodoActions.setAsDone),
+      concatMap(({ todo }) => {
+        const toSend = { ...todo, done: !todo.done };
+        return this.todoService.updateItem(toSend).pipe(
+          map((todo) => TodoActions.setAsDoneFinished({ todo })),
+          catchError((error) => of(error))
+        );
+      })
     )
   );
 
   deleteTodo$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(todoActions.deleteTodo),
-      map(action => action.payload),
-      switchMap(payload =>
-        this.todoService.deleteItem(payload).pipe(
-          map(_ => todoActions.deleteTodoFinished({ payload })),
-          catchError(error => of(error))
+      ofType(TodoActions.deleteTodo),
+      concatMap(({ todo }) =>
+        this.todoService.deleteItem(todo).pipe(
+          map((_) => TodoActions.deleteTodoFinished({ todo })),
+          catchError((error) => of(error))
         )
       )
     )

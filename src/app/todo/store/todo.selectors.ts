@@ -1,35 +1,12 @@
-import {
-  ActionReducerMap,
-  createFeatureSelector,
-  createSelector
-} from '@ngrx/store';
-import { ReducerTodoState, todoReducer } from './todo.reducer';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { TodoState } from './todo.reducer';
 
-export const featureStateName = 'todoFeature';
+export const featureName = 'todoFeature';
 
-export interface TodoState {
-  todo: ReducerTodoState;
-}
+export const getTodoFeatureState =
+  createFeatureSelector<TodoState>(featureName);
 
-export const todoReducers: ActionReducerMap<TodoState> = {
-  todo: todoReducer
-};
-
-export const getTodoFeatureState = createFeatureSelector<TodoState>(
-  featureStateName
-);
-
-export const getAllUndoneItems = createSelector(
+export const getAllItems = createSelector(
   getTodoFeatureState,
-  (state: TodoState) => state.todo.items.filter(x => !x.done)
-);
-
-export const getAllDoneItems = createSelector(
-  getTodoFeatureState,
-  (state: TodoState) => state.todo.items.filter(x => x.done)
-);
-
-export const getSelectedItem = createSelector(
-  getTodoFeatureState,
-  (state: TodoState) => state.todo.selectedItem
+  (state: TodoState) => state.items
 );

@@ -1,44 +1,19 @@
-import { createAction, props } from '@ngrx/store';
-import { Todo } from '../../models/todo';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { Todo } from '../models/todo';
 
-export const loadAllTodos = createAction('[Todo] Load Todos');
-export const loadAllTodosFinished = createAction(
-  '[Todo] Load Todos Finished',
-  props<{ payload: Todo[] }>()
-);
+export const TodoActions = createActionGroup({
+  source: 'Todo',
+  events: {
+    'Add Todo': props<{ value: string }>(),
+    'Add Todo Finished': props<{ todo: Todo }>(),
 
-export const loadSingleTodo = createAction(
-  '[Todo] Load Single Todo',
-  props<{ payload: string }>()
-);
-export const loadSingleTodoFinished = createAction(
-  '[Todo] Load Single Todo Finished',
-  props<{ payload: Todo }>()
-);
+    'Load All Todos': emptyProps(),
+    'Load All Todos Finished': props<{ todos: Todo[] }>(),
 
-export const addTodo = createAction(
-  '[Todo] Add Todo',
-  props<{ payload: string }>()
-);
-export const addTodoFinished = createAction(
-  '[Todo] Add Todo Finished',
-  props<{ payload: Todo }>()
-);
+    'Set As Done': props<{ todo: Todo }>(),
+    'Set As Done Finished': props<{ todo: Todo }>(),
 
-export const setAsDone = createAction(
-  '[Todo] SetAsDone',
-  props<{ payload: Todo }>()
-);
-export const setAsDoneFinished = createAction(
-  '[Todo] SetAsDone Finished',
-  props<{ payload: Todo }>()
-);
-
-export const deleteTodo = createAction(
-  '[Todo] DeleteTodo',
-  props<{ payload: Todo }>()
-);
-export const deleteTodoFinished = createAction(
-  '[Todo] DeleteTodo Finished',
-  props<{ payload: Todo }>()
-);
+    'Delete Todo': props<{ todo: Todo }>(),
+    'Delete Todo Finished': props<{ todo: Todo }>(),
+  },
+});

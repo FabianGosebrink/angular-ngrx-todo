@@ -1,31 +1,16 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { OAuthModule } from 'angular-oauth2-oidc';
+import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './shared/components/navigation/navigation.component';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        OAuthModule.forRoot(),
-        RouterTestingModule,
-      ],
-      declarations: [AppComponent, NavigationComponent],
-    }).compileComponents();
-  }));
+      imports: [AppComponent],
+    })
+  );
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
+    const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'todoapp'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('todoapp');
   });
 });

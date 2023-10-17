@@ -1,66 +1,75 @@
-import { Todo } from '../../models/todo';
-import * as todoActions from './todo.actions';
-import { createReducer, on, Action } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
+import { Todo } from '../models/todo';
+import { TodoActions } from './todo.actions';
 
-export interface ReducerTodoState {
+export interface TodoState {
   items: Todo[];
   selectedItem: Todo;
   loading: boolean;
 }
 
-export const initialState: ReducerTodoState = {
+export const initialState: TodoState = {
   items: [],
   selectedItem: null,
-  loading: false
+  loading: false,
 };
 
-const todoReducerInternal = createReducer(
+export const todoReducer = createReducer(
   initialState,
-  on(
-    todoActions.addTodo,
-    todoActions.deleteTodo,
-    todoActions.loadAllTodos,
-    todoActions.loadSingleTodo,
-    todoActions.setAsDone,
-    state => ({
-      ...state,
-      loading: true
-    })
-  ),
-  on(todoActions.addTodoFinished, (state, { payload }) => ({
+  on(TodoActions.addTodo, TodoActions.loadAllTodos, (state) => ({
     ...state,
-    loading: false,
-    items: [...state.items, payload]
+    loading: true,
   })),
-  on(todoActions.loadAllTodosFinished, (state, { payload }) => ({
-    ...state,
-    loading: false,
-    items: [...payload]
-  })),
-  on(todoActions.loadSingleTodoFinished, (state, { payload }) => ({
-    ...state,
-    loading: false,
-    selectedItem: payload
-  })),
-  on(todoActions.deleteTodoFinished, (state, { payload }) => ({
-    ...state,
-    loading: false,
-    items: [...state.items.filter(x => x !== payload)]
-  })),
-  on(todoActions.setAsDoneFinished, (state, { payload }) => {
-    const index = state.items.findIndex(x => x.id === payload.id);
 
-    state.items[index] = payload;
+  on(TodoActions.addTodoFinished, (state, { todo }) => {
+    const newItems = [...state.items, todo];
+    const sortedItems = newItems.sort(sortByDone());
 
     return {
-      ...state
+      ...state,
+      loading: false,
+      items: sortedItems,
+    };
+  }),
+
+  on(TodoActions.loadAllTodosFinished, (state, { todos }) => {
+    const sortedItems = todos.sort(sortByDone());
+
+    return {
+      ...state,
+      loading: false,
+      items: [...sortedItems],
+    };
+  }),
+
+  on(TodoActions.deleteTodoFinished, (state, { todo }) => ({
+    ...state,
+    loading: false,
+    items: [...state.items.filter((x) => x.id !== todo.id)],
+  })),
+
+  on(TodoActions.setAsDoneFinished, (state, { todo }) => {
+    const allItems = [...state.items];
+    const index = allItems.findIndex((x) => x.id === todo.id);
+
+    allItems[index] = todo;
+
+    return {
+      ...state,
+      loading: false,
+      items: allItems,
     };
   })
 );
 
-export function todoReducer(
-  state: ReducerTodoState | undefined,
-  action: Action
-) {
-  return todoReducerInternal(state, action);
+function sortByDone(): (a: Todo, b: Todo) => number {
+  return (a: Todo, b: Todo) => {
+    if (a.done < b.done) {
+      return -1;
+    }
+    if (a.done > b.done) {
+      return 1;
+    }
+    return 0;
+  };
 }
