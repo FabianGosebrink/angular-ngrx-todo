@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Todo } from '../../models/todo';
+import { TodoActions } from '../../store/todo.actions';
 import { TodoState } from '../../store/todo.reducer';
 import { featureName } from '../../store/todo.selectors';
 import { initialState } from './../../store/todo.reducer';
@@ -57,4 +58,13 @@ describe('TodoMainComponent', () => {
       expect(result).toEqual(expectedItems);
     });
   }));
+
+  it('should dispatch correct action when todo is added', () => {
+    const spy = spyOn(store, 'dispatch');
+    const value = 'test';
+
+    component.addTodo(value);
+
+    expect(spy).toHaveBeenCalledWith(TodoActions.addTodo({ value }));
+  });
 });
