@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { environment } from '../../environments/environment';
-import { Todo } from '../models/todo';
+import { Todo } from '../todo';
 
 @Component({
   selector: 'app-todo-main',
