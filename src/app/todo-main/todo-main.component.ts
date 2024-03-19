@@ -1,28 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { environment } from '../../../../environments/environment';
-import { Todo } from '../../models/todo';
-import { TodoFormComponent } from '../../presentational/todo-form/todo-form.component';
-import { TodoListComponent } from '../../presentational/todo-list/todo-list.component';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { environment } from '../../environments/environment';
+import { Todo } from '../models/todo';
 
 @Component({
   selector: 'app-todo-main',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    TodoListComponent,
-    TodoFormComponent,
-  ],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './todo-main.component.html',
   styleUrls: ['./todo-main.component.css'],
 })
 export class TodoMainComponent {
   items: Todo[] = [];
 
-  constructor(private readonly http: HttpClient) {}
+  form = this.formBuilder.group({
+    todoValue: ['', Validators.required],
+    done: [false],
+  });
+
+  constructor(
+    private readonly http: HttpClient,
+    private readonly formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.http.get<Todo[]>(`${environment.apiUrl}todos/`).subscribe((items) => {
@@ -30,8 +31,8 @@ export class TodoMainComponent {
     });
   }
 
-  addTodo(value: string): void {
-    const toSend = { value };
+  addTodo(): void {
+    const toSend = { value: this.form.value.todoValue };
 
     this.http
       .post<Todo>(`${environment.apiUrl}todos/`, toSend)
@@ -49,6 +50,8 @@ export class TodoMainComponent {
   }
 
   markAsDone(item: Todo): void {
+    item.done = !item.done;
+
     this.http
       .put<Todo>(`${environment.apiUrl}todos/${item.id}`, item)
       .subscribe((updatedItem) => {
