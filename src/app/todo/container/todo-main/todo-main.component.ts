@@ -1,46 +1,56 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Todo } from '../../models/todo';
-import { TodoFormComponent } from '../../presentational/todo-form/todo-form.component';
-import { TodoListComponent } from '../../presentational/todo-list/todo-list.component';
-import { TodoActions } from '../../store/todo.actions';
-import { getAllItems } from '../../store/todo.selectors';
+import { TodoService } from '../../store/todo.service';
 
 @Component({
   selector: 'app-todo-main',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    TodoListComponent,
-    TodoFormComponent,
-  ],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './todo-main.component.html',
   styleUrls: ['./todo-main.component.css'],
 })
 export class TodoMainComponent {
-  private readonly store = inject(Store);
+  private readonly service = inject(TodoService);
+  private readonly formbuilder = inject(FormBuilder);
 
-  items$: Observable<Todo[]>;
+  form = this.formbuilder.group({
+    todoValue: ['', Validators.required],
+    done: [false],
+  });
+
+  items: Todo[] = [];
 
   ngOnInit(): void {
-    this.items$ = this.store.pipe(select(getAllItems));
-
-    this.store.dispatch(TodoActions.loadAllTodos());
+    this.service.getItems().subscribe((items) => {
+      this.items = items;
+    });
   }
 
-  addTodo(value: string): void {
-    this.store.dispatch(TodoActions.addTodo({ value }));
+  addTodo() {
+    this.service
+      .addItem(this.form.value.todoValue)
+      .subscribe((response: Todo) => {
+        this.items.push(response);
+        this.form.reset();
+      });
   }
 
-  deleteTodo(todo: Todo): void {
-    this.store.dispatch(TodoActions.deleteTodo({ todo }));
+  moveToDone(item: Todo) {
+    item.done = !item.done;
+    this.service.updateItem(item).subscribe((response: Todo) => {
+      const index = this.items.findIndex((x) => x.id === response.id);
+
+      this.items[index] = response;
+    });
   }
 
-  markAsDone(todo: Todo): void {
-    this.store.dispatch(TodoActions.setAsDone({ todo }));
+  deleteItem(item: Todo) {
+    if (confirm('Really delete?')) {
+      this.service.deleteItem(item).subscribe((response: Todo) => {
+        this.items = this.items.filter((x) => x.id !== item.id);
+      });
+    }
   }
 }
