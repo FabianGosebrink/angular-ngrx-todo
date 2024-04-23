@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Todo } from '../../models/todo';
 import { TodoActions } from '../../services/todo.actions';
 import { TodoState, initialState } from '../../services/todo.reducer';
 import { featureName } from '../../services/todo.selectors';
+import { Todo } from '../models/todo';
 import { TodoMainComponent } from './todo-main.component';
 
 describe('TodoMainComponent', () => {
