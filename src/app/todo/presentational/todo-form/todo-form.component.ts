@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TodoService2 } from '../services/todo.service2';
 
 @Component({
   selector: 'app-todo-form',
@@ -11,8 +10,9 @@ import { TodoService2 } from '../services/todo.service2';
   styleUrls: ['./todo-form.component.css'],
 })
 export class TodoFormComponent {
-  private readonly service = inject(TodoService2);
   private readonly formbuilder = inject(FormBuilder);
+
+  @Output() todoAdded = new EventEmitter();
 
   form = this.formbuilder.group({
     todoValue: ['', Validators.required],
@@ -20,6 +20,7 @@ export class TodoFormComponent {
   });
 
   addTodo() {
-    this.service.addItem(this.form.value.todoValue);
+    this.todoAdded.emit(this.form.value.todoValue);
+    this.form.reset();
   }
 }
